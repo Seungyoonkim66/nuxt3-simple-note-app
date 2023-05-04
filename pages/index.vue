@@ -1,69 +1,33 @@
 <script setup lang="ts">
+import { PlusIcon } from '@heroicons/vue/24/outline';
 </script>
 
 <template>
-  <div class="note">
-    <div class="note__sidebar sidebar">
-      <div class="sidebar__button-box">
-        <SidebarButton>새로운 노트 추가</SidebarButton>
-      </div>
-      <div class="sidebar__items pretty-scrollbar">
-        <NuxtLink
-          to="#"
-        >
-          <SidebarItem
-            active
-            title="hello world"
-            preview="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quibusdam, explicabo! At debitis, modi eveniet, esse laborum nihil doloremque nemo officiis obcaecati accusantium similique blanditiis maxime tempore dolore. Eaque, sed a!"
-          />
-        </NuxtLink>
-        <SidebarDivider />
+  <div class="default-content">
 
-        <SidebarItem />
-        <SidebarDivider />
-
-        <SidebarItem />
-        <SidebarDivider />
-
-        <SidebarItem />
-        <SidebarDivider />
-        <SidebarItem />
-      </div>
-    </div>
-    <div class="note__content">
-2
-    </div>
+    <NuxtLink to="#">
+      <PlusIcon class="default-content__icon"/>
+    </NuxtLink>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.note {
-  display: grid;
-  grid-template-columns: 300px 1fr;
-  height: 100vh;
-
-  &__sidebar {
-    border-right: 1px solid var(--border-color);
-  }
-
-  &__content {
-
-  }
-}
-
-.sidebar {
+.default-content {
   display: flex;
-  flex-direction: column;
-  overflow: auto;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  
+  &__icon {
+    width: 5rem;
+    color: var(--text-color);
+    opacity: 0.3;
+    transition: opacity .2s;
 
-  &__button-box {
-    flex-shrink: 0;
-  }
-
-  &__items {
-    flex-grow: 1;
-    overflow: auto;
-    scrollbar-gutter: stable;
+    &:hover {
+      opacity: 1;
+    }
   }
 }
 </style>
+

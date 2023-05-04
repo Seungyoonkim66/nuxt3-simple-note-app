@@ -13,6 +13,7 @@
     "nuxt": "^3.4.3"
   },
   "dependencies": {
+    "@heroicons/vue": "^2.0.17",
     "sass": "^1.62.1"
   }
 }
