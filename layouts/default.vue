@@ -5,7 +5,7 @@
   <div class="note">
     <div class="note__sidebar sidebar">
       <div class="sidebar__button-box">
-        <SidebarButton>새로운 노트 추가</SidebarButton>
+        <NoteButton>새로운 노트 추가</NoteButton>
       </div>
       <div class="sidebar__items pretty-scrollbar">
         <NuxtLink
@@ -47,7 +47,7 @@
   }
 
   &__content {
-
+    padding: 1.25rem;
   }
 }
 
