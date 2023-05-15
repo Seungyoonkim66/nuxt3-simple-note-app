@@ -5,8 +5,8 @@ withDefaults(defineProps<{
   active?: boolean,
 }>(), {
   active: false,
-  title: '타이틀 없음',
-  preview: '추가 텍스트 없음'
+  title: '제목 없음',
+  preview: '내용 없음'
 });
 </script>
 
