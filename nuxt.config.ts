@@ -3,5 +3,11 @@ export default defineNuxtConfig({
   css: [
     'assets/styles/normalize.css',
     'assets/styles/common.scss',
-  ]
+  ],
+  runtimeConfig: {
+    // 서버에서 쓸 때는 여기서 선언 
+    public: { // 클라이언트에서 쓸 때는 여기서 선언
+      apiUrl: process.env.NUXT_API_URL,
+    }
+  }
 })
