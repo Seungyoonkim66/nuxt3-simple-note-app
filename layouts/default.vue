@@ -1,4 +1,23 @@
 <script setup lang="ts">
+import type { Note } from '@/types/note.type';
+import type { Response } from '@/types/response.type';
+
+const config = useRuntimeConfig(); // nuxt.config.js에 접근하기 위해 
+
+const apiUrl = config.public.apiUrl;
+
+/* TODO: 리팩토링 composable로 만들기 */
+const { data } = await useFetch<Response<Note[]>>(`${apiUrl}/api/v1/notes`);
+
+if (!data.value) {
+  throw createError({
+    statusCode: 500,
+    statusMessage: 'Something went wrong'
+  })
+}
+
+const notes:Note[] = data.value.data;
+
 </script>
 
 <template>
@@ -8,26 +27,22 @@
         <NoteButton>새로운 노트 추가</NoteButton>
       </div>
       <div class="sidebar__items pretty-scrollbar">
-        <NuxtLink
-          to="#"
+
+        <template 
+          v-for="(note, index) in notes"
+          :key="note.id"
         >
-          <SidebarItem
-            active
-            title="hello world"
-            preview="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quibusdam, explicabo! At debitis, modi eveniet, esse laborum nihil doloremque nemo officiis obcaecati accusantium similique blanditiis maxime tempore dolore. Eaque, sed a!"
-          />
-        </NuxtLink>
-        <SidebarDivider />
+          <NuxtLink
+            :to="`/notes/${note.id}`"
+          >
+            <SidebarItem 
+              :title="note.title"
+              :preview="note.teaser"
+            />
+            <SidebarDivider v-if="index !== notes.length - 1"/>
+          </NuxtLink>
+        </template>
 
-        <SidebarItem />
-        <SidebarDivider />
-
-        <SidebarItem />
-        <SidebarDivider />
-
-        <SidebarItem />
-        <SidebarDivider />
-        <SidebarItem />
       </div>
     </div>
     <div class="note__content">
