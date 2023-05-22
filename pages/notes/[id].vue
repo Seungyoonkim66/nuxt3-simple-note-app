@@ -1,16 +1,8 @@
 <script setup lang="ts">
-type Response<T> = {
-  data: T,
-}
-type Note = {
-  id: number;
-  title: string;
-  content: string;
-  teaser: string;
-  views: number;
-  created_at: Date;
-  updated_at: Date;
-}
+import type { Note } from '@/types/note.type';
+import type { Response } from '@/types/response.type';
+
+
 const route = useRoute();
 const config = useRuntimeConfig(); // nuxt.config.js에 접근하기 위해 
 
