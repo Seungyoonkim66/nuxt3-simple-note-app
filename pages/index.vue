@@ -5,7 +5,7 @@ import { PlusIcon } from '@heroicons/vue/24/outline';
 <template>
   <div class="default-content">
 
-    <NuxtLink to="#">
+    <NuxtLink to="/notes/new">
       <PlusIcon class="default-content__icon"/>
     </NuxtLink>
   </div>
