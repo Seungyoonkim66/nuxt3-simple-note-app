@@ -1,4 +1,9 @@
 <script setup lang="ts">
+import { NoteSchema } from '@/types/note.type';
+import { fromZodError } from 'zod-validation-error'; 
+
+const snackbak = useSnackbar();
+
 const props = withDefaults(defineProps<{
   title?:  string;
   content?: string;
@@ -25,6 +30,21 @@ watch(() => props.content, content => {
 }, { immediate: true });
 
 function submit() {
+  const parsedForm = NoteSchema.pick({
+    title: true,
+    content: true,
+  }).safeParse(form);
+
+  if (!parsedForm.success) {
+    const formatted = fromZodError(parsedForm.error);
+
+    snackbak.add({
+      type: 'error',
+      text: formatted.message,
+    });
+
+    return;
+  }
   emits('submit', form);
 }
 </script>

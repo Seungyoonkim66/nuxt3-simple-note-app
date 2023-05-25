@@ -1,5 +1,11 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  modules: ['nuxt-snackbar'],
+  snackbar: {
+    bottom: true,
+    right: true,
+    duration: 5000
+  },
   css: [
     'assets/styles/normalize.css',
     'assets/styles/common.scss',
