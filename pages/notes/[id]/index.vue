@@ -5,7 +5,7 @@ import type { Response } from '@/types/response.type';
 const route = useRoute();
 const config = useRuntimeConfig(); // nuxt.config.js에 접근하기 위해 
 
-const id = computed(() => route.params.id);
+const noteId = computed(() => route.params.id);
 const apiUrl = config.public.apiUrl;
 
 /* 
@@ -15,7 +15,7 @@ const apiUrl = config.public.apiUrl;
   => 기본적으로 제공되는 useFetch 사용
 */
 
-const { data } = await useFetch<Response<Note>>(`${apiUrl}/api/v1/notes/${id.value}`);
+const { data } = await useFetch<Response<Note>>(`${apiUrl}/api/v1/notes/${noteId.value}`);
   /* 
     useFetch
     - 서버에서만 api 콜 한번 -> 랜더링 + 데이터 캐싱
@@ -31,6 +31,14 @@ if (!data.value) {
 }
 
 const note = data.value.data;
+
+async function deleteNote() {
+  await $fetch<{ message: string }>(`${apiUrl}/api/v1/notes/${noteId.value}`, {
+    method: 'DELETE'
+  });
+
+  navigateTo('/');
+}
 </script>
 
 <template>
@@ -45,7 +53,11 @@ const note = data.value.data;
           :to="`/notes/${note.id}/edit`"
           class="content__btn"
         >수정</NuxtLink>
-        <button type="button" class="content__btn">삭제</button>
+        <button 
+          type="button" 
+          class="content__btn"
+          @click="deleteNote"
+        >삭제</button>
       </div>
     </div>
 
