@@ -44,7 +44,7 @@ function submit() {
       class="form__content pretty-scrollbar"
     />
 
-    <div class="form__submit-wrap`per">
+    <div class="form__submit-wrapper">
       <NoteButton 
         class="form__submit"
         type="submit"

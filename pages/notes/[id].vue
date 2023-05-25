@@ -2,7 +2,6 @@
 import type { Note } from '@/types/note.type';
 import type { Response } from '@/types/response.type';
 
-
 const route = useRoute();
 const config = useRuntimeConfig(); // nuxt.config.js에 접근하기 위해 
 
@@ -36,20 +35,72 @@ const note = data.value.data;
 
 <template>
 
-  <div>
-    <div>
-      <h1>{{ note.title }}</h1>
+  <div class="content">
+    <div class="content__header">
+      <h1 class="content__title">{{ note.title }}</h1>
+      <div class="content__info">
+        <span>최근 수정 시간: {{  humanize(note.updated_at) }}</span>
+        <span>조회수: {{ note.views }}</span>
+        <NuxtLink class="content__btn">수정</NuxtLink>
+        <button type="button" class="content__btn">삭제</button>
+      </div>
     </div>
 
-    <div>
-      <span>Updated at {{  note.updated_at }}</span>
-      <span>Views: {{ note.views }}</span>
-    </div>
-
-    <div v-html="note.content"/>
+    <div 
+      class="content__body pretty-scrollbar"
+      v-html="note.content"
+    />
 
   </div>
 </template>
 
 <style lang="scss" scoped>
+.content {
+  height: 100%;
+  max-height: calc(100vh - 1.25rem * 2);
+  display: flex;
+  flex-direction: column;
+
+  &__header {
+    margin-bottom: 2.5rem;
+  }
+
+  &__title {
+    font-size: 2.5rem;
+    margin: 0;
+    margin-bottom: .625rem;
+  }
+
+  &__info {
+    font-size: 1rem;
+    color: var(--text-color-light);
+    display: flex;
+    column-gap: .8rem;
+    font-weight: 300;
+    align-items: center;
+  }
+
+  &__btn {
+    border: none;
+    background: none;
+    outline: none;
+    padding: 0;
+    cursor: pointer;
+    color: inherit;
+    font-weight: inherit;
+    appearance: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+
+  &__body {
+    flex-grow: 1;
+    overflow: auto;
+    margin-right: -1.25rem;
+    padding-right: 1.25rem;
+  }
+}
 </style>
