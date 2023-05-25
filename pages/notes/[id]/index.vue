@@ -41,14 +41,17 @@ const note = data.value.data;
       <div class="content__info">
         <span>최근 수정 시간: {{  humanize(note.updated_at) }}</span>
         <span>조회수: {{ note.views }}</span>
-        <NuxtLink class="content__btn">수정</NuxtLink>
+        <NuxtLink 
+          :to="`/notes/${note.id}/edit`"
+          class="content__btn"
+        >수정</NuxtLink>
         <button type="button" class="content__btn">삭제</button>
       </div>
     </div>
 
     <div 
       class="content__body pretty-scrollbar"
-      v-html="note.content"
+      v-html="convertNewLine(note.content)"
     />
 
   </div>
