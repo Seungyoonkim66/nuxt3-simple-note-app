@@ -6,6 +6,8 @@ const config = useRuntimeConfig(); // nuxt.config.js에 접근하기 위해
 
 const apiUrl = config.public.apiUrl;
 
+const noteId = computed(():number => Number(useRoute().params.id));
+
 /* TODO: 리팩토링 composable로 만들기 */
 const { data } = await useFetch<Response<Note[]>>(`${apiUrl}/api/v1/notes`);
 
@@ -24,7 +26,9 @@ const notes:Note[] = data.value.data;
   <div class="note">
     <div class="note__sidebar sidebar">
       <div class="sidebar__button-box">
-        <NoteButton>새로운 노트 추가</NoteButton>
+        <NuxtLink to="/notes/new">
+          <NoteButton>새로운 노트 추가</NoteButton>
+        </NuxtLink>
       </div>
       <div class="sidebar__items pretty-scrollbar">
 
@@ -38,6 +42,7 @@ const notes:Note[] = data.value.data;
             <SidebarItem 
               :title="note.title"
               :preview="note.teaser"
+              :active="noteId === note.id"
             />
             <SidebarDivider v-if="index !== notes.length - 1"/>
           </NuxtLink>
