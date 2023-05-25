@@ -4,6 +4,7 @@ import type { Response } from '@/types/response.type';
 
 const route = useRoute();
 const config = useRuntimeConfig(); // nuxt.config.js에 접근하기 위해 
+const { trigger } = useReloadSignal();
 
 const noteId = computed(() => route.params.id);
 const apiUrl = config.public.apiUrl;
@@ -33,10 +34,13 @@ if (!data.value) {
 const note = data.value.data;
 
 async function deleteNote() {
+  if (!confirm('정말 삭제하시겠습니까?')) return;
+  
   await $fetch<{ message: string }>(`${apiUrl}/api/v1/notes/${noteId.value}`, {
     method: 'DELETE'
   });
 
+  trigger();
   navigateTo('/');
 }
 </script>

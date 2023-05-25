@@ -3,6 +3,7 @@ import type { Note } from '@/types/note.type';
 import type { Response } from '@/types/response.type';
 
 const config = useRuntimeConfig();
+const { trigger } = useReloadSignal();
 const apiUrl = config.public.apiUrl;
 const noteId = Number(useRoute().params.id);
 
@@ -23,6 +24,7 @@ async function submit(form: { title: string; content: string; }) {
     body: form
   });
 
+  trigger();
   // TODO: zod로 400 에러 처리
   navigateTo(`/notes/${data.id}`);
 }

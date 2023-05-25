@@ -4,6 +4,7 @@ import type { Response } from '@/types/response.type';
 
 const route = useRoute();
 const config = useRuntimeConfig(); // nuxt.config.js에 접근하기 위해 
+const { trigger } = useReloadSignal();
 
 const id = computed(() => route.params.id);
 const apiUrl = config.public.apiUrl;
@@ -18,7 +19,8 @@ async function submit(form: {title: string, content: string}) {
     }
   });
 
-  navigateTo(`/notes/${data.id}`)
+  trigger();
+  navigateTo(`/notes/${data.id}`);
 }
 </script>
 
