@@ -1,17 +1,13 @@
 <script setup lang="ts">
 import type { Note } from '@/types/note.type';
-import type { Response } from '@/types/response.type';
 
-const config = useRuntimeConfig(); // nuxt.config.js에 접근하기 위해 
 const { signal } = useReloadSignal();
-
-const apiUrl = config.public.apiUrl;
 
 const noteId = computed(():number => Number(useRoute().params.id));
 
 
-/* TODO: 리팩토링 composable로 만들기 */
-const { data, refresh } = await useFetch<Response<Note[]>>(`${apiUrl}/api/v1/notes`);
+
+const { data, refresh } = await useFetchApi<Note[]>('/api/v1/notes');
 /* TODO: useFetch가 반환하는 것: refresh, pending, error, execute 등... 알아보기 */
 
 if (!data.value) {

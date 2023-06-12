@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import type { Note } from '@/types/note.type';
-import type { Response } from '@/types/response.type';
 
 const route = useRoute();
-const config = useRuntimeConfig(); // nuxt.config.js에 접근하기 위해 
+
 const { trigger } = useReloadSignal();
 
 const noteId = computed(() => route.params.id);
-const apiUrl = config.public.apiUrl;
 
 /* 
   axois를 쓰면 안되는 이유
@@ -16,13 +14,13 @@ const apiUrl = config.public.apiUrl;
   => 기본적으로 제공되는 useFetch 사용
 */
 
-const { data } = await useFetch<Response<Note>>(`${apiUrl}/api/v1/notes/${noteId.value}`);
-  /* 
-    useFetch
-    - 서버에서만 api 콜 한번 -> 랜더링 + 데이터 캐싱
-    - 클라이언트에서 hydration할 때 캐싱된 데이터 사용
-    - 즉, 서버에서 딱 한번만 api 콜하고 캐싱된 데이터 사용 
-  */
+const { data } = await useFetchApi<Note>(`/api/v1/notes/${noteId.value}`);
+/* 
+  useFetch
+  - 서버에서만 api 콜 한번 -> 랜더링 + 데이터 캐싱
+  - 클라이언트에서 hydration할 때 캐싱된 데이터 사용
+  - 즉, 서버에서 딱 한번만 api 콜하고 캐싱된 데이터 사용 
+*/
 
 if (!data.value) {
   throw createError({/* nuxt에서 기본으로 제공하는 것 */
@@ -36,7 +34,7 @@ const note = data.value.data;
 async function deleteNote() {
   if (!confirm('정말 삭제하시겠습니까?')) return;
 
-  await $fetch<{ message: string }>(`${apiUrl}/api/v1/notes/${noteId.value}`, {
+  $fetchApi<{ message: string }>(`/api/v1/notes/${noteId.value}`, {
     method: 'DELETE'
   });
 

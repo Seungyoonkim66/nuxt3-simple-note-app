@@ -2,12 +2,10 @@
 import type { Note } from '@/types/note.type';
 import type { Response } from '@/types/response.type';
 
-const config = useRuntimeConfig();
 const { trigger } = useReloadSignal();
-const apiUrl = config.public.apiUrl;
 const noteId = Number(useRoute().params.id);
 
-const { data } = await useFetch<Response<Note>>(`${apiUrl}/api/v1/notes/${noteId}`)
+const { data } = await useFetchApi<Note>(`api/v1/notes/${noteId}`)
 
 if (!data.value) {
   throw createError({
@@ -19,7 +17,7 @@ if (!data.value) {
 const note = data.value.data;
 
 async function submit(form: { title: string; content: string; }) {
-  const { data } = await $fetch<Response<Note>>(`${apiUrl}/api/v1/notes/${noteId}`, {
+  const { data } = await $fetchApi<Note>(`api/v1/notes/${noteId}`, {
     method: 'PUT',
     body: form
   });
