@@ -51,7 +51,14 @@ async function deleteNote() {
     <div class="content__header">
       <h1 class="content__title">{{ note.title === '' ? '제목 없음' : note.title }}</h1>
       <div class="content__info">
-        <span>최근 수정 시간: {{  humanize(note.updated_at) }}</span>
+        <!-- client-only: 
+          * 서버쪽에서 만든 화면과 하이드레이션 된 이후에 화면이 달라지는 문제를 해결하기 위해 client 에서만 랜더링하는 것 
+          * [fileName].client.vue 파일을 만들면 client-only로 감싼 효과를 가진 파일이 있다. -> TODO: fallback은 어떻게 처리하는지 알아보기 
+         -->
+        <ClientOnly fallback="loading...">
+          <!-- <template #fallback> 이렇게도 쓸 수 있다. </template> -->
+          <span>최근 수정 시간: {{  humanize(note.updated_at) }}</span>
+        </ClientOnly>
         <span>조회수: {{ note.views }}</span>
         <NuxtLink 
           :to="`/notes/${note.id}/edit`"
