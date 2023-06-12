@@ -35,7 +35,7 @@ const note = data.value.data;
 
 async function deleteNote() {
   if (!confirm('정말 삭제하시겠습니까?')) return;
-  
+
   await $fetch<{ message: string }>(`${apiUrl}/api/v1/notes/${noteId.value}`, {
     method: 'DELETE'
   });
@@ -49,7 +49,7 @@ async function deleteNote() {
 
   <div class="content">
     <div class="content__header">
-      <h1 class="content__title">{{ note.title }}</h1>
+      <h1 class="content__title">{{ note.title === '' ? '제목 없음' : note.title }}</h1>
       <div class="content__info">
         <span>최근 수정 시간: {{  humanize(note.updated_at) }}</span>
         <span>조회수: {{ note.views }}</span>

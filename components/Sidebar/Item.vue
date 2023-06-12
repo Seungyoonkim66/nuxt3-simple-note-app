@@ -16,11 +16,11 @@ withDefaults(defineProps<{
     'sidebar-item--active': active
   }">
     <h1 class="sidebar-item__title">
-      {{ title }}
+      {{ title  === '' ? '제목 없음' : title }}
     </h1>
 
     <div class="sidebar-item__preview">
-      {{ preview }}
+      {{ preview === '' ? '내용 없음' : preview }}
     </div>
   </div>
 </template>
