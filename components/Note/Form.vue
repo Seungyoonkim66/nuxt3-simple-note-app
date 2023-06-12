@@ -2,7 +2,7 @@
 import { NoteSchema } from '@/types/note.type';
 import { fromZodError } from 'zod-validation-error'; 
 
-const snackbak = useSnackbar();
+const snackbar = useSnackbar();
 
 const props = withDefaults(defineProps<{
   title?:  string;
@@ -38,7 +38,7 @@ function submit() {
   if (!parsedForm.success) {
     const formatted = fromZodError(parsedForm.error);
 
-    snackbak.add({
+    snackbar.add({
       type: 'error',
       text: formatted.message,
     });
