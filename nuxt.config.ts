@@ -12,6 +12,8 @@ export default defineNuxtConfig({
   ],
   runtimeConfig: {
     // 서버에서 쓸 때는 여기서 선언 
+    supabaseUrl: process.env.NUXT_SUPABASE_URL,
+    supabaseApiKey: process.env.NUXT_SUPABASE_KEY,
     public: { // 클라이언트에서 쓸 때는 여기서 선언
       apiUrl: process.env.NUXT_API_URL,
     }
