@@ -1,6 +1,6 @@
 import { NoteSchema } from "~/server/schemas/note.schema";
 import { supabase } from "~/server/supabase";
-import { createTeaser } from "~/server/utils/teaser.util";
+import { createTeaser, extractTextFromHtml } from "~/server/utils/teaser.util";
 
 
 export default defineEventHandler(async (event) => {
@@ -15,12 +15,10 @@ export default defineEventHandler(async (event) => {
     }));
   }
 
-  const teaser: string = createTeaser(parsedNote.data.content, 100);
-  
   const { data, error } = await supabase.from('notes').insert({
     title: parsedNote.data.title,
     content: parsedNote.data.content,
-    teaser: teaser,
+    teaser: createTeaser(extractTextFromHtml(parsedNote.data.content), 100),
   }).select('id'); // create한 데이터의 id 컬럼 값만 가져올 수 있음 
 
   if (error) {
