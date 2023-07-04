@@ -59,10 +59,14 @@ function submit() {
       v-model="form.title"
     />
 
-    <textarea 
+    <RichTextEditor 
+      class="form__content pretty-scrollbar"
+      v-model="form.content"
+    />
+    <!-- <textarea 
       v-model="form.content"
       class="form__content pretty-scrollbar"
-    />
+    /> -->
 
     <div class="form__submit-wrapper">
       <NoteButton 

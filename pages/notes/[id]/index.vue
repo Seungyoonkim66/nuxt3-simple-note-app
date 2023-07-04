@@ -70,10 +70,11 @@ async function deleteNote() {
       </div>
     </div>
 
-    <div 
+    <RichTextEditorViewer :content="note.content"/>
+    <!-- <div 
       class="content__body pretty-scrollbar"
       v-html="convertNewLine(note.content)"
-    />
+    /> -->
 
   </div>
 </template>
@@ -117,14 +118,6 @@ async function deleteNote() {
     &:hover {
       text-decoration: underline;
     }
-  }
-
-
-  &__body {
-    flex-grow: 1;
-    overflow: auto;
-    margin-right: -1.25rem;
-    padding-right: 1.25rem;
   }
 }
 </style>

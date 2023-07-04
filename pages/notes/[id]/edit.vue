@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { Note } from '@/types/note.type';
-import type { Response } from '@/types/response.type';
 
 const { trigger } = useReloadSignal();
 const noteId = Number(useRoute().params.id);

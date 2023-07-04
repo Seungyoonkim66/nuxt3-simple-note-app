@@ -15,6 +15,9 @@
   "dependencies": {
     "@heroicons/vue": "^2.0.17",
     "@supabase/supabase-js": "^2.26.0",
+    "@tiptap/pm": "^2.0.3",
+    "@tiptap/starter-kit": "^2.0.3",
+    "@tiptap/vue-3": "^2.0.3",
     "dayjs": "^1.11.7",
     "nuxt-snackbar": "^1.0.3",
     "sass": "^1.62.1",
