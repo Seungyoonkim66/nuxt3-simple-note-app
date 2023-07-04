@@ -5,7 +5,7 @@ import type { Response } from '@/types/response.type';
 const { trigger } = useReloadSignal();
 const noteId = Number(useRoute().params.id);
 
-const { data } = await useFetchApi<Note>(`api/v1/notes/${noteId}`)
+const { data } = await useFetchApi<Note>(`/api/v1/notes/${noteId}`)
 
 if (!data.value) {
   throw createError({
@@ -17,7 +17,7 @@ if (!data.value) {
 const note = data.value.data;
 
 async function submit(form: { title: string; content: string; }) {
-  const { data } = await $fetchApi<Note>(`api/v1/notes/${noteId}`, {
+  const { data } = await $fetchApi<Note>(`/api/v1/notes/${noteId}`, {
     method: 'PUT',
     body: form
   });
