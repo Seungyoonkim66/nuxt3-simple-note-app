@@ -2,16 +2,28 @@ import { IdSchema } from '~/server/schemas/params.schema';
 import { eq, sql } from 'drizzle-orm';
 import { db } from '~/server/db';
 import { notes as notesTable } from '~/server/db/schema'; 
+import { throwError } from '~/server/utils/throwError';
 
 export default defineTryCatchHandler(async (event) => {
 
   const parsedId = IdSchema.safeParse(event.context.params?.id);
 
   if (!parsedId.success) {
-    return sendError(event, createError({
+    return throwError(event, {
       statusCode: 400,
-      statusMessage: parsedId.error.message
-    }));
+      message: parsedId.error.message
+    });
+  }
+
+  const notes = await db.update(notesTable)
+    .set({ views: sql`views + 1` })
+    .where(eq(notesTable.id, parsedId.data))
+    .returning();
+
+  if (notes.length === 0) {
+    return throwError(event, {
+      statusCode: 404,
+    });
   }
 
   // const notes = await db.select()
@@ -22,7 +34,7 @@ export default defineTryCatchHandler(async (event) => {
   // // if (error) {
   // //   // log 코드 
   // //   console.error(error.message);
-  // //   return sendError(event, createError({
+  // //   return throwError(event, createError({
   // //     statusCode: 500,
   // //     statusMessage: 'Internal server error'
   // //   }))
@@ -40,23 +52,12 @@ export default defineTryCatchHandler(async (event) => {
   // // }).eq('id', notes[0].id).select();
 
   // // if (updateError) {
-  // //   return sendError(event, createError({
+  // //   return throwError(event, createError({
   // //     statusCode: 500,
   // //     statusMessage: 'Internal server error'
   // //   }));
   // // }
 
-  const notes = await db.update(notesTable)
-    .set({ views: sql`views + 1` })
-    .where(eq(notesTable.id, parsedId.data))
-    .returning();
-
-  if (notes.length === 0) {
-    return sendError(event, createError({
-      statusCode: 404,
-      statusMessage: 'Note not found',
-    }));
-  }
 
   return {
     data: notes[0],

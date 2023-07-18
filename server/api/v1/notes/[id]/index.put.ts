@@ -10,20 +10,20 @@ export default defineTryCatchHandler(async (event) => {
   const parsedId = IdSchema.safeParse(event.context.params?.id);
 
   if (!parsedId.success) {
-    return sendError(event, createError({
+    return throwError(event, {
       statusCode: 400,
-      statusMessage: parsedId.error.message
-    }));
+      message: parsedId.error.message
+    });
   }
 
   const body = await readBody(event);
   const note = NoteSchema.safeParse(body);
 
   if (!note.success) {
-    return sendError(event, createError({
+    return throwError(event, {
       statusCode: 400,
-      statusMessage: note.error.message
-    }));
+      message: note.error.message
+    });
   }
   
   const updatedNotes = await db.update(notesTable)
@@ -36,6 +36,12 @@ export default defineTryCatchHandler(async (event) => {
     .where(eq(notesTable.id, parsedId.data))
     .returning({ id: notesTable.id });
     
+  if (updatedNotes.length === 0) {
+    return throwError(event, {
+      statusCode: 404,
+    });
+  }
+  
   // const { data:updatedNotes, error } = await supabase.from('notes').update({
     // title: note.data.title,
     // content: note.data.content,
@@ -44,18 +50,11 @@ export default defineTryCatchHandler(async (event) => {
   // }).eq('id', parsedId.data).select('id');
 
   // if (error) {
-  //   return sendError(event, createError({
+  //   return throwError(event, createError({
   //     statusCode: 500,
   //     statusMessage: 'Internal server error',
   //   }));
   // }
-
-  if (updatedNotes.length === 0) {
-    return sendError(event, createError({
-      statusCode: 404,
-      statusMessage: 'Note not found'
-    }));
-  }
 
 
   return {

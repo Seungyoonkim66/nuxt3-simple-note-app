@@ -10,10 +10,10 @@ export default defineTryCatchHandler(async (event) => {
   const parsedNote = NoteSchema.safeParse(body);
 
   if (!parsedNote.success) {
-    return sendError(event, createError({
+    return throwError(event, {
       statusCode: 400,
-      statusMessage: parsedNote.error.message,
-    }));
+      message: parsedNote.error.message,
+    });
   }
 
   const newNoteData = await db.insert(notes).values({
@@ -32,7 +32,7 @@ export default defineTryCatchHandler(async (event) => {
 
   // if (error) {
   //   // log 코드 
-  //   return sendError(event, createError({
+  //   return throwError(event, createError({
   //     statusCode: 500,
   //     statusMessage: 'Internal server error'
   //   }))

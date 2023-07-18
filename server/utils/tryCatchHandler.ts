@@ -7,9 +7,8 @@ export const defineTryCatchHandler = (handler: EventHandler) => defineEventHandl
   } catch (err) {
     console.log({ err });
 
-    return sendError(event, createError({
+    return throwError(event, {
       statusCode: 500,
-      statusMessage: 'Internal server error'
-    }));
+    });
   }
 })

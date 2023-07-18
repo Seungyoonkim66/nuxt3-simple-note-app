@@ -8,20 +8,19 @@ export default defineTryCatchHandler(async (event) => {
   const parsedId = IdSchema.safeParse(event.context.params?.id);
 
   if (!parsedId.success) {
-    return sendError(event, createError({
+    return throwError(event, {
       statusCode: 400,
-      statusMessage: parsedId.error.message
-    }));
+      message: parsedId.error.message
+    });
   }
 
-
-  const deletedNote = await db.delete(notesTable)
+  await db.delete(notesTable)
     .where(eq(notesTable.id, parsedId.data));
 
   // const { error } = await supabase.from('notes').delete().eq('id', parsedId.data);
 
   // if (error) {
-  //   return sendError(event, createError({
+  //   return throwError(event, createError({
   //     statusCode: 500,
   //     statusMessage: 'Internal serever error'
   //   }));
