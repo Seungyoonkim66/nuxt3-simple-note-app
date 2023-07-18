@@ -5,17 +5,10 @@ import { notes as notesTable } from '~/server/db/schema';
 import { eq } from "drizzle-orm";
 
 export default defineTryCatchHandler(async (event) => {
-  const parsedId = IdSchema.safeParse(event.context.params?.id);
-
-  if (!parsedId.success) {
-    return throwError(event, {
-      statusCode: 400,
-      message: parsedId.error.message
-    });
-  }
+  const parsedId = IdSchema.parse(event.context.params?.id);
 
   await db.delete(notesTable)
-    .where(eq(notesTable.id, parsedId.data));
+    .where(eq(notesTable.id, parsedId));
 
   // const { error } = await supabase.from('notes').delete().eq('id', parsedId.data);
 

@@ -7,22 +7,13 @@ import { notes } from '~/server/db/schema';
 export default defineTryCatchHandler(async (event) => {
   const body = await readBody(event);
 
-  const parsedNote = NoteSchema.safeParse(body);
-
-  if (!parsedNote.success) {
-    return throwError(event, {
-      statusCode: 400,
-      message: parsedNote.error.message,
-    });
-  }
+  const parsedNote = NoteSchema.parse(body);
 
   const newNoteData = await db.insert(notes).values({
-    title: parsedNote.data.title,
-    content: parsedNote.data.content,
-    teaser: createTeaser(extractTextFromHtml(parsedNote.data.content), 100),
+    title: parsedNote.title,
+    content: parsedNote.content,
+    teaser: createTeaser(extractTextFromHtml(parsedNote.content), 100),
   }).returning({ id: notes.id });
-
-
 
   // const { data, error } = await supabase.from('notes').insert({
     // title: parsedNote.data.title,

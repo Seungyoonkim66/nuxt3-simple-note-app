@@ -6,18 +6,11 @@ import { throwError } from '~/server/utils/throwError';
 
 export default defineTryCatchHandler(async (event) => {
 
-  const parsedId = IdSchema.safeParse(event.context.params?.id);
-
-  if (!parsedId.success) {
-    return throwError(event, {
-      statusCode: 400,
-      message: parsedId.error.message
-    });
-  }
+  const parsedId = IdSchema.parse(event.context.params?.id);
 
   const notes = await db.update(notesTable)
     .set({ views: sql`views + 1` })
-    .where(eq(notesTable.id, parsedId.data))
+    .where(eq(notesTable.id, parsedId))
     .returning();
 
   if (notes.length === 0) {
