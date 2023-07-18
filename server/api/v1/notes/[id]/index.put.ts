@@ -6,7 +6,7 @@ import { db } from '~/server/db';
 import { notes, notes as notesTable } from '~/server/db/schema';
 import { eq } from 'drizzle-orm';
 
-export default defineEventHandler(async (event) => {
+export default defineTryCatchHandler(async (event) => {
   const parsedId = IdSchema.safeParse(event.context.params?.id);
 
   if (!parsedId.success) {

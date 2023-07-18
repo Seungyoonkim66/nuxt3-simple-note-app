@@ -4,7 +4,7 @@ import { db } from '~/server/db';
 import { notes } from '~/server/db/schema';
 
 
-export default defineEventHandler(async (event) => {
+export default defineTryCatchHandler(async (event) => {
   const body = await readBody(event);
 
   const parsedNote = NoteSchema.safeParse(body);

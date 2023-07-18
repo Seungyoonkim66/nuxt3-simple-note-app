@@ -2,9 +2,9 @@ import { IdSchema } from '~/server/schemas/params.schema';
 import { eq, sql } from 'drizzle-orm';
 import { db } from '~/server/db';
 import { notes as notesTable } from '~/server/db/schema'; 
-// import { supabase } from '~/server/supabase';
 
-export default defineEventHandler(async (event) => {
+export default defineTryCatchHandler(async (event) => {
+
   const parsedId = IdSchema.safeParse(event.context.params?.id);
 
   if (!parsedId.success) {
@@ -57,7 +57,6 @@ export default defineEventHandler(async (event) => {
       statusMessage: 'Note not found',
     }));
   }
-
 
   return {
     data: notes[0],

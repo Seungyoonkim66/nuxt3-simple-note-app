@@ -2,7 +2,7 @@
 import { db } from '~/server/db';
 import { notes as notesTable } from '~/server/db/schema';
 
-export default defineEventHandler(async (event) => {
+export default defineTryCatchHandler(async (event) => {
 
   const notes = await db.select().from(notesTable);
 
